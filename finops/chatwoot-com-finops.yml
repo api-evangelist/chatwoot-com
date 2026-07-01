@@ -1,0 +1,98 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Chatwoot
+providerId: chatwoot-com
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: true
+tags:
+- Customer Support
+- Shared Inbox
+- Open Source
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Chatwoot spend. Chatwoot Cloud bills primarily on a per-agent
+  (per-seat), per-month subscription across the Startups, Business, and
+  Enterprise tiers, with a free Hacker tier and free open-source self-hosting.
+  The dominant cost driver on Cloud is the agent seat count and chosen tier;
+  Captain AI usage consumes a per-tier credit allotment. Self-hosted cost is
+  infrastructure and operations rather than license fees.
+notes: >-
+  Per-agent prices and Captain AI credit allotments change over time; verify
+  against the Chatwoot pricing page during reconciliation. Self-hosted spend is
+  compute/storage/ops and is not billed by Chatwoot.
+sources:
+- https://www.chatwoot.com/pricing
+- https://github.com/chatwoot/chatwoot
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Chatwoot
+serviceCategory: Business Applications
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Annual
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+focusColumns:
+  ServiceName: Chatwoot Cloud
+  ServiceCategory: Business Applications
+  ProviderName: Chatwoot
+  PublisherName: Chatwoot
+  InvoiceIssuerName: Chatwoot
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Subscription-Based
+meters:
+- name: agent_seats
+  description: Billable agent seats on a Chatwoot Cloud tier, priced per agent per month.
+  unit: seats
+  aggregation: max
+  dimensions:
+  - account
+  - tier
+- name: captain_ai_credits
+  description: Captain AI credits consumed against the per-tier monthly allotment.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+  - tier
+- name: self_hosted_infrastructure
+  description: >-
+    Compute, storage, and operational cost of running the open-source
+    self-hosted edition; incurred with your infrastructure provider, not Chatwoot.
+  unit: currency
+  aggregation: sum
+  dimensions:
+  - deployment
+principles:
+- name: Visibility
+  description: >-
+    Track active agent seats per account and tier; monitor Captain AI credit
+    burn against the tier allotment.
+- name: Allocation
+  description: >-
+    Map agent seats and any add-on usage to teams/cost centers; for self-hosted,
+    tag the underlying infrastructure to the Chatwoot workload.
+- name: Optimization
+  description: >-
+    Right-size the Cloud tier to the seat count and features actually used, and
+    reclaim inactive seats; consider self-hosting when infrastructure/ops cost
+    is lower than per-seat Cloud pricing at scale.
+- name: Accountability
+  description: >-
+    Assign an owner for the Chatwoot subscription (or self-hosted deployment)
+    and review seat count and AI credit usage each billing cycle.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

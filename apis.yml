@@ -1,0 +1,382 @@
+aid: chatwoot-com
+url: https://raw.githubusercontent.com/api-evangelist/chatwoot-com/refs/heads/main/apis.yml
+name: Chatwoot
+kind: company
+description: Chatwoot is an open-source customer engagement and support suite that
+  unifies email, live-chat, social, and messaging channels into a single shared
+  inbox. Agents, teams, contacts, conversations, and messages are all managed
+  through a REST API surface split across an Application API, a Client API for
+  end-user widgets, and a Platform API for super-admin installation control.
+  Chatwoot is available as self-hostable open-source software and as Chatwoot
+  Cloud.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Customer Support
+- Customer Engagement
+- Shared Inbox
+- Live Chat
+- Open Source
+- Omnichannel
+- Help Desk
+created: '2026-07-01'
+modified: '2026-07-01'
+specificationVersion: '0.19'
+apis:
+- aid: chatwoot-com:chatwoot-application-agents-api
+  name: Chatwoot Application Agents API
+  tags:
+  - Agents
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/agents
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/agents
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Manage agents within an account - list, add, update the role and
+    availability of, and remove agents who staff the shared inbox.
+- aid: chatwoot-com:chatwoot-application-teams-api
+  name: Chatwoot Application Teams API
+  tags:
+  - Teams
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/teams
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/teams
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Create and manage teams and their agent membership so conversations
+    can be routed to the right group of agents.
+- aid: chatwoot-com:chatwoot-application-inboxes-api
+  name: Chatwoot Application Inboxes API
+  tags:
+  - Inboxes
+  - Channels
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/inboxes
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/inboxes
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: List, create, update, and delete inboxes across channels (website
+    live-chat, email, and social/messaging), and manage the agents assigned to
+    each inbox.
+- aid: chatwoot-com:chatwoot-application-contacts-api
+  name: Chatwoot Application Contacts API
+  tags:
+  - Contacts
+  - CRM
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/contacts
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/contacts
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Manage contacts - create, list, search, filter, update, and delete
+    the people who reach out, plus list a contact's conversations, contactable
+    inboxes, and labels.
+- aid: chatwoot-com:chatwoot-application-conversations-api
+  name: Chatwoot Application Conversations API
+  tags:
+  - Conversations
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/conversations
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/conversations
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Create and manage conversations - list with filters, toggle status,
+    assign to agents or teams, update priority, and manage conversation labels
+    and custom attributes.
+- aid: chatwoot-com:chatwoot-application-messages-api
+  name: Chatwoot Application Messages API
+  tags:
+  - Messages
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/messages
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/messages
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Create, list, and delete messages within a conversation, including
+    outgoing agent replies, private notes, and attachments.
+- aid: chatwoot-com:chatwoot-application-labels-api
+  name: Chatwoot Application Labels API
+  tags:
+  - Labels
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/labels
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/labels
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: List the account's labels and read or set the labels applied to
+    individual conversations and contacts for organization and reporting.
+- aid: chatwoot-com:chatwoot-application-custom-attributes-api
+  name: Chatwoot Application Custom Attributes API
+  tags:
+  - Custom Attributes
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/custom-attributes
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/custom-attributes
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Define and manage custom attribute definitions for conversations and
+    contacts so installation-specific data can be captured and filtered on.
+- aid: chatwoot-com:chatwoot-application-canned-responses-api
+  name: Chatwoot Application Canned Responses API
+  tags:
+  - Canned Responses
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/canned-responses
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/canned-responses
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Manage canned responses (saved replies) - list, create, update, and
+    delete the short-code reply templates agents use to answer faster.
+- aid: chatwoot-com:chatwoot-application-automation-api
+  name: Chatwoot Application Automation Rules API
+  tags:
+  - Automation
+  - Rules
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/automation-rule
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/automation-rule
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Create and manage automation rules that fire on events (conversation
+    created, updated, message created) to auto-assign, label, and act on
+    conversations from conditions.
+- aid: chatwoot-com:chatwoot-application-reports-api
+  name: Chatwoot Application Reports API
+  tags:
+  - Reports
+  - Analytics
+  - Application API
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/reports
+  baseURL: https://app.chatwoot.com/api/v1/accounts/{account_id}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/reports
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Retrieve account-level and agent/team/inbox/label-level metrics -
+    conversation counts, incoming/outgoing volume, resolution and response times,
+    and conversation summary reports.
+- aid: chatwoot-com:chatwoot-client-contacts-api
+  name: Chatwoot Client Contacts API
+  tags:
+  - Client API
+  - Contacts
+  - Widget
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/client-apis/contacts
+  baseURL: https://app.chatwoot.com/public/api/v1/inboxes/{inbox_identifier}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/client-apis/contacts
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: End-user (widget-facing) API to create and update the contact tied
+    to an inbox identifier, returning a pubsub token used to authenticate that
+    contact's subsequent client requests.
+- aid: chatwoot-com:chatwoot-client-conversations-api
+  name: Chatwoot Client Conversations API
+  tags:
+  - Client API
+  - Conversations
+  - Widget
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/client-apis/conversations
+  baseURL: https://app.chatwoot.com/public/api/v1/inboxes/{inbox_identifier}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/client-apis/conversations
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: End-user API for a contact to create and list their conversations
+    and to toggle status, toggle typing, and update last-seen from within a
+    custom chat interface.
+- aid: chatwoot-com:chatwoot-client-messages-api
+  name: Chatwoot Client Messages API
+  tags:
+  - Client API
+  - Messages
+  - Widget
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/client-apis/messages
+  baseURL: https://app.chatwoot.com/public/api/v1/inboxes/{inbox_identifier}
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/client-apis/messages
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: End-user API for a contact to create, list, and update messages in
+    their conversation, powering a fully custom chat widget on top of Chatwoot.
+- aid: chatwoot-com:chatwoot-platform-users-api
+  name: Chatwoot Platform Users API
+  tags:
+  - Platform API
+  - Users
+  - Administration
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/platform-apis/users
+  baseURL: https://app.chatwoot.com/platform/api/v1
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/platform-apis/users
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Super-admin API to create, read, update, and delete users across an
+    installation and to obtain a single-sign-on login URL for a user.
+- aid: chatwoot-com:chatwoot-platform-accounts-api
+  name: Chatwoot Platform Accounts API
+  tags:
+  - Platform API
+  - Accounts
+  - Administration
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/platform-apis/accounts
+  baseURL: https://app.chatwoot.com/platform/api/v1
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/platform-apis/accounts
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Super-admin API to provision and manage accounts on an installation
+    and to manage the association of users to accounts via account users.
+- aid: chatwoot-com:chatwoot-platform-agent-bots-api
+  name: Chatwoot Platform Agent Bots API
+  tags:
+  - Platform API
+  - Agent Bots
+  - Automation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.chatwoot.com/api-reference/platform-apis/agentbots
+  baseURL: https://app.chatwoot.com/platform/api/v1
+  properties:
+  - url: https://developers.chatwoot.com/api-reference/platform-apis/agentbots
+    type: APIReference
+  - url: openapi/chatwoot-com-openapi.yml
+    type: OpenAPI
+  - url: collections/chatwoot-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/chatwoot-com.opencollection.json
+    type: OpenCollection
+  description: Super-admin API to create, read, update, and delete agent bots that
+    can be attached to inboxes to power conversational automation.
+common:
+- type: GitHubOrganization
+  url: https://github.com/chatwoot
+- type: LinkedIn
+  url: https://www.linkedin.com/company/chatwoot
+- type: Website
+  url: https://www.chatwoot.com
+- type: Documentation
+  url: https://developers.chatwoot.com
+- type: Plans
+  url: plans/chatwoot-com-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/chatwoot-com-rate-limits.yml
+- type: FinOps
+  url: finops/chatwoot-com-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

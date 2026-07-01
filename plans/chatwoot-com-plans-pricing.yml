@@ -1,0 +1,155 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Chatwoot
+providerId: chatwoot-com
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: true
+tags:
+- Customer Support
+- Customer Engagement
+- Shared Inbox
+- Live Chat
+- Open Source
+- Plans
+description: >-
+  Chatwoot is available two ways. The open-source edition can be self-hosted
+  for free (core code is MIT-licensed, with additional Chatwoot license terms
+  covering some features), giving unlimited use of the Application, Client, and
+  Platform APIs on infrastructure you run yourself. Chatwoot Cloud is a hosted
+  SaaS with per-agent, per-month tiers (Hacker, Startups, Business, Enterprise);
+  the API is available across the paid Cloud tiers. Pricing below reflects
+  annual billing on Chatwoot Cloud.
+notes: >-
+  Cloud prices are per agent per month billed annually and change over time;
+  Captain AI credits, data-retention windows, and channel availability differ
+  by tier. Verify current tiers, limits, and any API entitlement on the
+  Chatwoot pricing page before relying on these values.
+sources:
+- https://www.chatwoot.com/pricing
+- https://github.com/chatwoot/chatwoot
+- https://developers.chatwoot.com
+plans:
+- id: chatwoot-self-hosted
+  name: Community (Self-Hosted)
+  type: free
+  description: >-
+    Open-source, self-hosted Chatwoot. Free to run on your own infrastructure
+    with full access to the Application, Client, and Platform APIs. You bear
+    hosting and operations costs.
+  entries:
+  - label: Self-Hosted Community Edition
+    name: self_hosted
+    type: flat
+    metric: license
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0 (self-hosted; you provide infrastructure)
+    userMultiplied: false
+  elements:
+  - name: Shared Inbox (all channels)
+  - name: Application API
+  - name: Client API
+  - name: Platform API
+  - name: Webhooks
+  - name: Automation Rules
+- id: chatwoot-cloud-hacker
+  name: Hacker (Cloud)
+  type: free
+  description: >-
+    Entry Chatwoot Cloud tier for trying the product - up to 2 agents and a
+    capped monthly conversation volume, live-chat only, with a short data
+    retention window.
+  entries:
+  - label: Hacker
+    name: cloud_hacker
+    type: flat
+    metric: agents
+    limit: 2
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0 per agent / month
+    userMultiplied: true
+  elements:
+  - name: Up to 2 agents
+  - name: Capped monthly conversations
+  - name: Live chat channel
+  - name: 30-day data retention
+- id: chatwoot-cloud-startups
+  name: Startups (Cloud)
+  type: paid
+  description: >-
+    Chatwoot Cloud tier with unlimited conversations, all channels, help
+    center, and an included allotment of Captain AI credits.
+  entries:
+  - label: Startups
+    name: cloud_startups
+    type: recurring
+    metric: agents
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $19 per agent / month (billed annually)
+    userMultiplied: true
+  elements:
+  - name: Unlimited conversations
+  - name: All channels
+  - name: Help center
+  - name: ~300 Captain AI credits
+  - name: 1-year data retention
+- id: chatwoot-cloud-business
+  name: Business (Cloud)
+  type: paid
+  description: >-
+    Most-popular Chatwoot Cloud tier adding teams, automation rules, voice, and
+    a larger Captain AI credit allotment.
+  entries:
+  - label: Business
+    name: cloud_business
+    type: recurring
+    metric: agents
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $39 per agent / month (billed annually)
+    userMultiplied: true
+  elements:
+  - name: Unlimited conversations
+  - name: All channels including voice
+  - name: Teams
+  - name: Automation rules
+  - name: ~500 Captain AI credits
+  - name: 2-year data retention
+- id: chatwoot-cloud-enterprise
+  name: Enterprise (Cloud)
+  type: enterprise
+  description: >-
+    Chatwoot Cloud tier for larger organizations - SSO/SAML, audit logs,
+    extended data retention, and a dedicated account manager for larger
+    seat counts.
+  entries:
+  - label: Enterprise
+    name: cloud_enterprise
+    type: recurring
+    metric: agents
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $99 per agent / month (billed annually)
+    userMultiplied: true
+  elements:
+  - name: SSO / SAML
+  - name: Audit logs
+  - name: ~800 Captain AI credits
+  - name: 3-year data retention
+  - name: Dedicated account manager (20+ agents)
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

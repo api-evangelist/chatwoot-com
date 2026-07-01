@@ -1,0 +1,68 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Chatwoot
+providerId: chatwoot-com
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- Customer Support
+- Shared Inbox
+- Open Source
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Chatwoot does not publish fixed, product-wide API rate-limit numbers in its
+  developer documentation. Because the platform is open-source and commonly
+  self-hosted, effective limits depend on the deployment: Rack::Attack
+  throttles and any reverse-proxy (nginx) or CDN limits configured by the
+  operator on self-hosted installs, and Chatwoot Cloud's own infrastructure
+  protections on the hosted service. Clients should treat limits as
+  deployment-specific and handle HTTP 429 responses gracefully.
+notes: >-
+  Specific request-per-minute values are not documented as a stable public
+  contract; they are governed by the installation's Rack::Attack configuration
+  and proxy settings. On reconciliation, confirm any throttles configured for
+  the target Chatwoot Cloud tenant or self-hosted deployment.
+sources:
+- https://developers.chatwoot.com
+- https://github.com/chatwoot/chatwoot
+- https://www.chatwoot.com/docs/self-hosted
+responseCodes:
+  throttled: 429
+limits:
+- name: Application API Requests
+  scope: account
+  metric: requests
+  limit: deployment-specific
+  notes: >-
+    Governed by Rack::Attack and any proxy/CDN limits on the installation;
+    Cloud enforces its own infrastructure protections.
+- name: Client API Requests
+  scope: inbox
+  metric: requests
+  limit: deployment-specific
+  notes: >-
+    Public widget-facing endpoints; subject to the same deployment-level
+    throttling and abuse protection.
+- name: Platform API Requests
+  scope: installation
+  metric: requests
+  limit: deployment-specific
+  notes: >-
+    Super-admin endpoints; typically low-volume administrative use, still
+    subject to installation-level throttling.
+policies:
+- name: Handle 429
+  description: >-
+    Back off on HTTP 429 responses with exponential backoff and jitter, and
+    honor any Retry-After header the deployment returns.
+- name: Self-Hosted Tuning
+  description: >-
+    Operators can tune throttling via Rack::Attack and their reverse proxy
+    (nginx) or CDN; there is no single fixed public limit to code against.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
