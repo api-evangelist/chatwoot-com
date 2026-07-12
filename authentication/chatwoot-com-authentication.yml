@@ -1,0 +1,18 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/chatwoot-com-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: userApiKey
+  type: apiKey
+  in: header
+  parameter: api_access_token
+  description: Application and Client access token passed in the `api_access_token` HTTP header.
+    For the Application API this is an agent/user access token; Client API requests are additionally
+    scoped by inbox and contact identifiers.
+  sources:
+  - openapi/chatwoot-com-openapi.yml

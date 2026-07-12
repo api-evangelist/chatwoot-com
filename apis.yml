@@ -363,6 +363,10 @@ apis:
   description: Super-admin API to create, read, update, and delete agent bots that
     can be attached to inboxes to power conversational automation.
 common:
+- type: DomainSecurity
+  url: security/chatwoot-com-domain-security.yml
+- type: Authentication
+  url: authentication/chatwoot-com-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/chatwoot
 - type: LinkedIn
@@ -377,6 +381,8 @@ common:
   url: rate-limits/chatwoot-com-rate-limits.yml
 - type: FinOps
   url: finops/chatwoot-com-finops.yml
+- type: Blog
+  url: https://www.chatwoot.com/blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
