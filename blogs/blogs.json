@@ -1,0 +1,14 @@
+{
+  "repo": "chatwoot-com",
+  "feeds": [
+    {
+      "source": "https://www.chatwoot.com/blog",
+      "feed_url": "https://www.chatwoot.com/blog",
+      "title": "Chatwoot Blog",
+      "saved": 0,
+      "error": "parse_failed"
+    }
+  ],
+  "fetched": "2026-07-11T11:43:46Z",
+  "post_count": 5
+}
