@@ -363,6 +363,8 @@ apis:
   description: Super-admin API to create, read, update, and delete agent bots that
     can be attached to inboxes to power conversational automation.
 common:
+- type: AgenticAccess
+  url: agentic-access/chatwoot-com-agentic-access.yml
 - type: DomainSecurity
   url: security/chatwoot-com-domain-security.yml
 - type: Authentication
