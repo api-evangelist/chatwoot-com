@@ -1,0 +1,113 @@
+openapi: 3.0.1
+info:
+  title: Chatwoot Agents Labels API
+  description: 'Chatwoot is an open-source customer engagement suite with a shared inbox across email, live-chat, social, and messaging channels. This specification covers the three Chatwoot API surfaces: the Application API (/api/v1/accounts/{account_id}/...) for account-scoped agent, contact, and conversation management; the Client API (/public/api/v1/inboxes/...) for building custom end-user chat widgets; and the Platform API (/platform/api/v1/...) for super-admin control of a Chatwoot installation. Application and Platform requests authenticate with an `api_access_token` HTTP header; Client requests are scoped by an inbox identifier and a contact source/pubsub identifier.'
+  termsOfService: https://www.chatwoot.com/terms-of-service/
+  contact:
+    name: Chatwoot Developers
+    url: https://developers.chatwoot.com
+  license:
+    name: MIT (core) with additional Chatwoot license terms for some features
+    url: https://github.com/chatwoot/chatwoot/blob/develop/LICENSE
+  version: '1.0'
+servers:
+- url: https://app.chatwoot.com
+  description: Chatwoot Cloud. For self-hosted installations, substitute your own host.
+security:
+- userApiKey: []
+tags:
+- name: Labels
+  description: Application API - manage labels.
+paths:
+  /api/v1/accounts/{account_id}/conversations/{conversation_id}/labels:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - $ref: '#/components/parameters/ConversationId'
+    get:
+      operationId: getConversationLabels
+      tags:
+      - Labels
+      summary: List labels applied to a conversation.
+      responses:
+        '200':
+          description: Object with a payload array of label names.
+    post:
+      operationId: setConversationLabels
+      tags:
+      - Labels
+      summary: Set the labels applied to a conversation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                labels:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: The updated label list.
+  /api/v1/accounts/{account_id}/labels:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: listLabels
+      tags:
+      - Labels
+      summary: List all labels in the account.
+      responses:
+        '200':
+          description: Object with a payload array of labels.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Label'
+components:
+  parameters:
+    ConversationId:
+      name: conversation_id
+      in: path
+      required: true
+      description: The display id of the conversation.
+      schema:
+        type: integer
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The numeric id of the account.
+      schema:
+        type: integer
+  schemas:
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        color:
+          type: string
+        show_on_sidebar:
+          type: boolean
+  securitySchemes:
+    userApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Application and Client access token passed in the `api_access_token` HTTP header. For the Application API this is an agent/user access token; Client API requests are additionally scoped by inbox and contact identifiers.
+    platformAppApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Platform App access token passed in the `api_access_token` HTTP header. Created by a super-admin from the Chatwoot installation's Platform Apps area and required for all /platform/api/v1 endpoints.

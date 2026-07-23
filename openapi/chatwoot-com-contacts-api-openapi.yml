@@ -1,0 +1,265 @@
+openapi: 3.0.1
+info:
+  title: Chatwoot Agents Contacts API
+  description: 'Chatwoot is an open-source customer engagement suite with a shared inbox across email, live-chat, social, and messaging channels. This specification covers the three Chatwoot API surfaces: the Application API (/api/v1/accounts/{account_id}/...) for account-scoped agent, contact, and conversation management; the Client API (/public/api/v1/inboxes/...) for building custom end-user chat widgets; and the Platform API (/platform/api/v1/...) for super-admin control of a Chatwoot installation. Application and Platform requests authenticate with an `api_access_token` HTTP header; Client requests are scoped by an inbox identifier and a contact source/pubsub identifier.'
+  termsOfService: https://www.chatwoot.com/terms-of-service/
+  contact:
+    name: Chatwoot Developers
+    url: https://developers.chatwoot.com
+  license:
+    name: MIT (core) with additional Chatwoot license terms for some features
+    url: https://github.com/chatwoot/chatwoot/blob/develop/LICENSE
+  version: '1.0'
+servers:
+- url: https://app.chatwoot.com
+  description: Chatwoot Cloud. For self-hosted installations, substitute your own host.
+security:
+- userApiKey: []
+tags:
+- name: Contacts
+  description: Application API - manage contacts.
+paths:
+  /api/v1/accounts/{account_id}/contacts:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: listContacts
+      tags:
+      - Contacts
+      summary: List contacts (paginated, sortable).
+      parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum:
+          - name
+          - email
+          - phone_number
+          - last_activity_at
+          - -name
+          - -email
+          - -phone_number
+          - -last_activity_at
+      - name: page
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Contacts payload with meta.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactList'
+    post:
+      operationId: createContact
+      tags:
+      - Contacts
+      summary: Create a contact.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCreate'
+      responses:
+        '200':
+          description: The created contact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /api/v1/accounts/{account_id}/contacts/search:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: searchContacts
+      tags:
+      - Contacts
+      summary: Search contacts by name, email, phone, or identifier.
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Matching contacts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactList'
+  /api/v1/accounts/{account_id}/contacts/filter:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    post:
+      operationId: filterContacts
+      tags:
+      - Contacts
+      summary: Filter contacts with a set of query conditions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterPayload'
+      responses:
+        '200':
+          description: Matching contacts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactList'
+  /api/v1/accounts/{account_id}/contacts/{id}:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      operationId: getContact
+      tags:
+      - Contacts
+      summary: Get a contact by id.
+      responses:
+        '200':
+          description: The contact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+    put:
+      operationId: updateContact
+      tags:
+      - Contacts
+      summary: Update a contact.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCreate'
+      responses:
+        '200':
+          description: The updated contact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+    delete:
+      operationId: deleteContact
+      tags:
+      - Contacts
+      summary: Delete a contact.
+      responses:
+        '200':
+          description: Contact deleted.
+  /api/v1/accounts/{account_id}/contacts/{id}/conversations:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      operationId: listContactConversations
+      tags:
+      - Contacts
+      summary: List all conversations for a contact.
+      responses:
+        '200':
+          description: Array of conversations for the contact.
+components:
+  schemas:
+    ContactList:
+      type: object
+      properties:
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+            current_page:
+              type: integer
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+        identifier:
+          type: string
+        custom_attributes:
+          type: object
+          additionalProperties: true
+        additional_attributes:
+          type: object
+          additionalProperties: true
+    FilterPayload:
+      type: object
+      properties:
+        payload:
+          type: array
+          items:
+            type: object
+            properties:
+              attribute_key:
+                type: string
+              filter_operator:
+                type: string
+              values:
+                type: array
+                items:
+                  type: string
+              query_operator:
+                type: string
+                enum:
+                - and
+                - or
+    ContactCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+        identifier:
+          type: string
+        custom_attributes:
+          type: object
+          additionalProperties: true
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The numeric id of the account.
+      schema:
+        type: integer
+  securitySchemes:
+    userApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Application and Client access token passed in the `api_access_token` HTTP header. For the Application API this is an agent/user access token; Client API requests are additionally scoped by inbox and contact identifiers.
+    platformAppApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Platform App access token passed in the `api_access_token` HTTP header. Created by a super-admin from the Chatwoot installation's Platform Apps area and required for all /platform/api/v1 endpoints.

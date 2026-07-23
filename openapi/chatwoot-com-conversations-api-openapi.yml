@@ -1,0 +1,249 @@
+openapi: 3.0.1
+info:
+  title: Chatwoot Agents Conversations API
+  description: 'Chatwoot is an open-source customer engagement suite with a shared inbox across email, live-chat, social, and messaging channels. This specification covers the three Chatwoot API surfaces: the Application API (/api/v1/accounts/{account_id}/...) for account-scoped agent, contact, and conversation management; the Client API (/public/api/v1/inboxes/...) for building custom end-user chat widgets; and the Platform API (/platform/api/v1/...) for super-admin control of a Chatwoot installation. Application and Platform requests authenticate with an `api_access_token` HTTP header; Client requests are scoped by an inbox identifier and a contact source/pubsub identifier.'
+  termsOfService: https://www.chatwoot.com/terms-of-service/
+  contact:
+    name: Chatwoot Developers
+    url: https://developers.chatwoot.com
+  license:
+    name: MIT (core) with additional Chatwoot license terms for some features
+    url: https://github.com/chatwoot/chatwoot/blob/develop/LICENSE
+  version: '1.0'
+servers:
+- url: https://app.chatwoot.com
+  description: Chatwoot Cloud. For self-hosted installations, substitute your own host.
+security:
+- userApiKey: []
+tags:
+- name: Conversations
+  description: Application API - manage conversations.
+paths:
+  /api/v1/accounts/{account_id}/conversations:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: listConversations
+      tags:
+      - Conversations
+      summary: List conversations with optional status, assignee, and inbox filters.
+      parameters:
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - open
+          - resolved
+          - pending
+          - snoozed
+          - all
+      - name: assignee_type
+        in: query
+        schema:
+          type: string
+          enum:
+          - me
+          - unassigned
+          - all
+          - assigned
+      - name: inbox_id
+        in: query
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Conversations payload with meta.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationList'
+    post:
+      operationId: createConversation
+      tags:
+      - Conversations
+      summary: Create a new conversation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationCreate'
+      responses:
+        '200':
+          description: The created conversation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+  /api/v1/accounts/{account_id}/conversations/{conversation_id}:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - $ref: '#/components/parameters/ConversationId'
+    get:
+      operationId: getConversation
+      tags:
+      - Conversations
+      summary: Get a conversation by id.
+      responses:
+        '200':
+          description: The conversation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+  /api/v1/accounts/{account_id}/conversations/{conversation_id}/toggle_status:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - $ref: '#/components/parameters/ConversationId'
+    post:
+      operationId: toggleConversationStatus
+      tags:
+      - Conversations
+      summary: Toggle the status of a conversation (open, resolved, pending, snoozed).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - open
+                  - resolved
+                  - pending
+                  - snoozed
+      responses:
+        '200':
+          description: The updated conversation.
+  /api/v1/accounts/{account_id}/conversations/{conversation_id}/assignments:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - $ref: '#/components/parameters/ConversationId'
+    post:
+      operationId: assignConversation
+      tags:
+      - Conversations
+      summary: Assign a conversation to an agent or a team.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignee_id:
+                  type: integer
+                team_id:
+                  type: integer
+      responses:
+        '200':
+          description: The assignment result.
+components:
+  parameters:
+    ConversationId:
+      name: conversation_id
+      in: path
+      required: true
+      description: The display id of the conversation.
+      schema:
+        type: integer
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The numeric id of the account.
+      schema:
+        type: integer
+  schemas:
+    ConversationCreate:
+      type: object
+      required:
+      - source_id
+      - inbox_id
+      properties:
+        source_id:
+          type: string
+        inbox_id:
+          type: integer
+        contact_id:
+          type: integer
+        status:
+          type: string
+          enum:
+          - open
+          - resolved
+          - pending
+          - snoozed
+        assignee_id:
+          type: integer
+        team_id:
+          type: integer
+        message:
+          type: object
+          properties:
+            content:
+              type: string
+    ConversationList:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            meta:
+              type: object
+            payload:
+              type: array
+              items:
+                $ref: '#/components/schemas/Conversation'
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: integer
+        account_id:
+          type: integer
+        inbox_id:
+          type: integer
+        status:
+          type: string
+          enum:
+          - open
+          - resolved
+          - pending
+          - snoozed
+        contact_id:
+          type: integer
+        assignee_id:
+          type: integer
+        team_id:
+          type: integer
+        priority:
+          type: string
+          enum:
+          - low
+          - medium
+          - high
+          - urgent
+        labels:
+          type: array
+          items:
+            type: string
+        custom_attributes:
+          type: object
+          additionalProperties: true
+  securitySchemes:
+    userApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Application and Client access token passed in the `api_access_token` HTTP header. For the Application API this is an agent/user access token; Client API requests are additionally scoped by inbox and contact identifiers.
+    platformAppApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Platform App access token passed in the `api_access_token` HTTP header. Created by a super-admin from the Chatwoot installation's Platform Apps area and required for all /platform/api/v1 endpoints.

@@ -1,0 +1,122 @@
+openapi: 3.0.1
+info:
+  title: Chatwoot Agents Custom Attributes API
+  description: 'Chatwoot is an open-source customer engagement suite with a shared inbox across email, live-chat, social, and messaging channels. This specification covers the three Chatwoot API surfaces: the Application API (/api/v1/accounts/{account_id}/...) for account-scoped agent, contact, and conversation management; the Client API (/public/api/v1/inboxes/...) for building custom end-user chat widgets; and the Platform API (/platform/api/v1/...) for super-admin control of a Chatwoot installation. Application and Platform requests authenticate with an `api_access_token` HTTP header; Client requests are scoped by an inbox identifier and a contact source/pubsub identifier.'
+  termsOfService: https://www.chatwoot.com/terms-of-service/
+  contact:
+    name: Chatwoot Developers
+    url: https://developers.chatwoot.com
+  license:
+    name: MIT (core) with additional Chatwoot license terms for some features
+    url: https://github.com/chatwoot/chatwoot/blob/develop/LICENSE
+  version: '1.0'
+servers:
+- url: https://app.chatwoot.com
+  description: Chatwoot Cloud. For self-hosted installations, substitute your own host.
+security:
+- userApiKey: []
+tags:
+- name: Custom Attributes
+  description: Application API - manage custom attribute definitions.
+paths:
+  /api/v1/accounts/{account_id}/custom_attribute_definitions:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: listCustomAttributeDefinitions
+      tags:
+      - Custom Attributes
+      summary: List custom attribute definitions.
+      responses:
+        '200':
+          description: Array of custom attribute definitions.
+    post:
+      operationId: createCustomAttributeDefinition
+      tags:
+      - Custom Attributes
+      summary: Create a custom attribute definition.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomAttributeDefinition'
+      responses:
+        '200':
+          description: The created custom attribute definition.
+  /api/v1/accounts/{account_id}/custom_attribute_definitions/{id}:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    patch:
+      operationId: updateCustomAttributeDefinition
+      tags:
+      - Custom Attributes
+      summary: Update a custom attribute definition.
+      responses:
+        '200':
+          description: The updated custom attribute definition.
+    delete:
+      operationId: deleteCustomAttributeDefinition
+      tags:
+      - Custom Attributes
+      summary: Delete a custom attribute definition.
+      responses:
+        '200':
+          description: Deleted.
+components:
+  schemas:
+    CustomAttributeDefinition:
+      type: object
+      required:
+      - attribute_display_name
+      - attribute_key
+      - attribute_model
+      properties:
+        attribute_display_name:
+          type: string
+        attribute_key:
+          type: string
+        attribute_display_type:
+          type: string
+          enum:
+          - text
+          - number
+          - currency
+          - percent
+          - link
+          - date
+          - list
+          - checkbox
+        attribute_model:
+          type: string
+          enum:
+          - conversation_attribute
+          - contact_attribute
+        attribute_values:
+          type: array
+          items:
+            type: string
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The numeric id of the account.
+      schema:
+        type: integer
+  securitySchemes:
+    userApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Application and Client access token passed in the `api_access_token` HTTP header. For the Application API this is an agent/user access token; Client API requests are additionally scoped by inbox and contact identifiers.
+    platformAppApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Platform App access token passed in the `api_access_token` HTTP header. Created by a super-admin from the Chatwoot installation's Platform Apps area and required for all /platform/api/v1 endpoints.

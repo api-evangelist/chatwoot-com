@@ -1,0 +1,112 @@
+openapi: 3.0.1
+info:
+  title: Chatwoot Agents Inboxes API
+  description: 'Chatwoot is an open-source customer engagement suite with a shared inbox across email, live-chat, social, and messaging channels. This specification covers the three Chatwoot API surfaces: the Application API (/api/v1/accounts/{account_id}/...) for account-scoped agent, contact, and conversation management; the Client API (/public/api/v1/inboxes/...) for building custom end-user chat widgets; and the Platform API (/platform/api/v1/...) for super-admin control of a Chatwoot installation. Application and Platform requests authenticate with an `api_access_token` HTTP header; Client requests are scoped by an inbox identifier and a contact source/pubsub identifier.'
+  termsOfService: https://www.chatwoot.com/terms-of-service/
+  contact:
+    name: Chatwoot Developers
+    url: https://developers.chatwoot.com
+  license:
+    name: MIT (core) with additional Chatwoot license terms for some features
+    url: https://github.com/chatwoot/chatwoot/blob/develop/LICENSE
+  version: '1.0'
+servers:
+- url: https://app.chatwoot.com
+  description: Chatwoot Cloud. For self-hosted installations, substitute your own host.
+security:
+- userApiKey: []
+tags:
+- name: Inboxes
+  description: Application API - manage channels/inboxes.
+paths:
+  /api/v1/accounts/{account_id}/inboxes:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: listInboxes
+      tags:
+      - Inboxes
+      summary: List inboxes in an account.
+      responses:
+        '200':
+          description: Object containing an array of inboxes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Inbox'
+  /api/v1/accounts/{account_id}/inboxes/{id}:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      operationId: getInbox
+      tags:
+      - Inboxes
+      summary: Get an inbox by id.
+      responses:
+        '200':
+          description: The inbox.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inbox'
+    patch:
+      operationId: updateInbox
+      tags:
+      - Inboxes
+      summary: Update an inbox.
+      responses:
+        '200':
+          description: The updated inbox.
+    delete:
+      operationId: deleteInbox
+      tags:
+      - Inboxes
+      summary: Delete an inbox.
+      responses:
+        '200':
+          description: Inbox deleted.
+components:
+  schemas:
+    Inbox:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        channel_type:
+          type: string
+          description: e.g. Channel::WebWidget, Channel::Email, Channel::Api, Channel::FacebookPage.
+        greeting_enabled:
+          type: boolean
+        working_hours_enabled:
+          type: boolean
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The numeric id of the account.
+      schema:
+        type: integer
+  securitySchemes:
+    userApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Application and Client access token passed in the `api_access_token` HTTP header. For the Application API this is an agent/user access token; Client API requests are additionally scoped by inbox and contact identifiers.
+    platformAppApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Platform App access token passed in the `api_access_token` HTTP header. Created by a super-admin from the Chatwoot installation's Platform Apps area and required for all /platform/api/v1 endpoints.

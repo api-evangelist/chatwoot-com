@@ -1,0 +1,160 @@
+openapi: 3.0.1
+info:
+  title: Chatwoot Agents API
+  description: 'Chatwoot is an open-source customer engagement suite with a shared inbox across email, live-chat, social, and messaging channels. This specification covers the three Chatwoot API surfaces: the Application API (/api/v1/accounts/{account_id}/...) for account-scoped agent, contact, and conversation management; the Client API (/public/api/v1/inboxes/...) for building custom end-user chat widgets; and the Platform API (/platform/api/v1/...) for super-admin control of a Chatwoot installation. Application and Platform requests authenticate with an `api_access_token` HTTP header; Client requests are scoped by an inbox identifier and a contact source/pubsub identifier.'
+  termsOfService: https://www.chatwoot.com/terms-of-service/
+  contact:
+    name: Chatwoot Developers
+    url: https://developers.chatwoot.com
+  license:
+    name: MIT (core) with additional Chatwoot license terms for some features
+    url: https://github.com/chatwoot/chatwoot/blob/develop/LICENSE
+  version: '1.0'
+servers:
+- url: https://app.chatwoot.com
+  description: Chatwoot Cloud. For self-hosted installations, substitute your own host.
+security:
+- userApiKey: []
+tags:
+- name: Agents
+  description: Application API - manage account agents.
+paths:
+  /api/v1/accounts/{account_id}/agents:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: listAgents
+      tags:
+      - Agents
+      summary: List agents in an account.
+      responses:
+        '200':
+          description: Array of agents.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agent'
+    post:
+      operationId: addAgent
+      tags:
+      - Agents
+      summary: Add a new agent to the account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCreate'
+      responses:
+        '200':
+          description: The created agent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+  /api/v1/accounts/{account_id}/agents/{id}:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    patch:
+      operationId: updateAgent
+      tags:
+      - Agents
+      summary: Update an agent's role or availability.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentUpdate'
+      responses:
+        '200':
+          description: The updated agent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+    delete:
+      operationId: deleteAgent
+      tags:
+      - Agents
+      summary: Remove an agent from the account.
+      responses:
+        '200':
+          description: Agent removed.
+components:
+  schemas:
+    AgentUpdate:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+          - agent
+          - administrator
+        availability_status:
+          type: string
+          enum:
+          - online
+          - offline
+          - busy
+    Agent:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum:
+          - agent
+          - administrator
+        availability_status:
+          type: string
+          enum:
+          - online
+          - offline
+          - busy
+        confirmed:
+          type: boolean
+    AgentCreate:
+      type: object
+      required:
+      - email
+      - role
+      properties:
+        email:
+          type: string
+        role:
+          type: string
+          enum:
+          - agent
+          - administrator
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The numeric id of the account.
+      schema:
+        type: integer
+  securitySchemes:
+    userApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Application and Client access token passed in the `api_access_token` HTTP header. For the Application API this is an agent/user access token; Client API requests are additionally scoped by inbox and contact identifiers.
+    platformAppApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Platform App access token passed in the `api_access_token` HTTP header. Created by a super-admin from the Chatwoot installation's Platform Apps area and required for all /platform/api/v1 endpoints.

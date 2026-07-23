@@ -1,0 +1,144 @@
+openapi: 3.0.1
+info:
+  title: Chatwoot Agents Messages API
+  description: 'Chatwoot is an open-source customer engagement suite with a shared inbox across email, live-chat, social, and messaging channels. This specification covers the three Chatwoot API surfaces: the Application API (/api/v1/accounts/{account_id}/...) for account-scoped agent, contact, and conversation management; the Client API (/public/api/v1/inboxes/...) for building custom end-user chat widgets; and the Platform API (/platform/api/v1/...) for super-admin control of a Chatwoot installation. Application and Platform requests authenticate with an `api_access_token` HTTP header; Client requests are scoped by an inbox identifier and a contact source/pubsub identifier.'
+  termsOfService: https://www.chatwoot.com/terms-of-service/
+  contact:
+    name: Chatwoot Developers
+    url: https://developers.chatwoot.com
+  license:
+    name: MIT (core) with additional Chatwoot license terms for some features
+    url: https://github.com/chatwoot/chatwoot/blob/develop/LICENSE
+  version: '1.0'
+servers:
+- url: https://app.chatwoot.com
+  description: Chatwoot Cloud. For self-hosted installations, substitute your own host.
+security:
+- userApiKey: []
+tags:
+- name: Messages
+  description: Application API - manage conversation messages.
+paths:
+  /api/v1/accounts/{account_id}/conversations/{conversation_id}/messages:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - $ref: '#/components/parameters/ConversationId'
+    get:
+      operationId: listMessages
+      tags:
+      - Messages
+      summary: List messages in a conversation.
+      responses:
+        '200':
+          description: Object with a payload array of messages.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+    post:
+      operationId: createMessage
+      tags:
+      - Messages
+      summary: Create a message in a conversation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageCreate'
+      responses:
+        '200':
+          description: The created message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+  /api/v1/accounts/{account_id}/conversations/{conversation_id}/messages/{message_id}:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    - $ref: '#/components/parameters/ConversationId'
+    - name: message_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    delete:
+      operationId: deleteMessage
+      tags:
+      - Messages
+      summary: Delete a message from a conversation.
+      responses:
+        '200':
+          description: Message deleted.
+components:
+  schemas:
+    MessageCreate:
+      type: object
+      properties:
+        content:
+          type: string
+        message_type:
+          type: string
+          enum:
+          - incoming
+          - outgoing
+        private:
+          type: boolean
+        content_type:
+          type: string
+        content_attributes:
+          type: object
+          additionalProperties: true
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        message_type:
+          type: string
+          enum:
+          - incoming
+          - outgoing
+          - activity
+          - template
+        content_type:
+          type: string
+        private:
+          type: boolean
+        sender:
+          type: object
+        created_at:
+          type: integer
+  parameters:
+    ConversationId:
+      name: conversation_id
+      in: path
+      required: true
+      description: The display id of the conversation.
+      schema:
+        type: integer
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The numeric id of the account.
+      schema:
+        type: integer
+  securitySchemes:
+    userApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Application and Client access token passed in the `api_access_token` HTTP header. For the Application API this is an agent/user access token; Client API requests are additionally scoped by inbox and contact identifiers.
+    platformAppApiKey:
+      type: apiKey
+      in: header
+      name: api_access_token
+      description: Platform App access token passed in the `api_access_token` HTTP header. Created by a super-admin from the Chatwoot installation's Platform Apps area and required for all /platform/api/v1 endpoints.
